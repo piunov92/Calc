@@ -58,7 +58,7 @@ public class Main {
     public static boolean overDigit(int digitOne, int digitTwo) {
         return digitOne <= 10 && digitTwo <= 10;
     }
-    public static int romanToArabic(String string) {
+    /*public static int romanToArabic(String string) {
         int digit = 0;
         try {
             digit = Roman.valueOf(string).getVal();
@@ -70,8 +70,20 @@ public class Main {
             }
         }
         return digit;
+    }*/
+    public static int romanToArabic(String string) throws IllegalArgumentException {
+        int digit = 0;
+        for (Roman roman : Roman.values()) {
+            while (string.startsWith(roman.name())) {
+                digit += roman.getVal();
+                string = string.replaceFirst(roman.name(), "");
+            }
+        }
+        if(digit == 0)
+            throw new IllegalArgumentException();
+        return digit;
     }
-    public static String arabicToRoman(int digit) {
+    /*public static String arabicToRoman(int digit) {
         int i = 0;
         List<Roman> romanVal = Roman.reversVal();
         StringBuilder roman = new StringBuilder();
@@ -83,6 +95,18 @@ public class Main {
                 i++;
         }
         return roman.toString();
+    }*/
+    public static String arabicToRoman(int digit) {
+        StringBuilder sign = new StringBuilder();
+        while (digit > 0) {
+            for(Roman roman : Roman.values()) {
+                while(digit >= roman.getVal()) {
+                    sign.append(roman.name());
+                    digit -= roman.getVal();
+                }
+            }
+        }
+        return sign.toString();
     }
     public static boolean isNumeric(String string) {
         for (char ch : string.toCharArray()) {
